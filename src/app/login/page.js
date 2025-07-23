@@ -77,7 +77,7 @@ export default function Login() {
             <img src="/favicon.png" alt="Cari Magang" className="w-36 h-36" />
           </div>
           <p className="text-gray-600">
-            "Masuk ke akun Anda untuk mengakses fitur lengkap"
+            &quot;Masuk ke akun Anda untuk mengakses fitur lengkap&quot;
           </p>
         </div>
       </div>
@@ -181,7 +181,8 @@ export default function Login() {
           🎯 SDG 8 - Decent Work & Economic Growth
         </div>
         <p className="mt-2 text-sm text-gray-600">
-          "Mendukung pekerjaan layak dan pertumbuhan ekonomi berkelanjutan"
+          &quot;Mendukung pekerjaan layak dan pertumbuhan ekonomi
+          berkelanjutan&quot;
         </p>
       </div>
     </div>

@@ -59,7 +59,7 @@ export default function Dashboard() {
     // Fetch data magang dan organizations
     fetchJobs(token);
     fetchOrganizations(token);
-  }, [router, pagination.page, filters]);
+  }, [router, pagination.page, filters, fetchJobs, fetchOrganizations]);
 
   const fetchOrganizations = async (token) => {
     try {
@@ -349,7 +349,8 @@ export default function Dashboard() {
                 Temukan Magang Impianmu
               </h1>
               <p className="text-gray-600 mt-1">
-                "Platform perantara untuk mencari lowongan magang berkualitas"
+                &quot;Platform perantara untuk mencari lowongan magang
+                berkualitas&quot;
               </p>
             </div>
             <div className="mt-4 md:mt-0">
@@ -979,8 +980,8 @@ export default function Dashboard() {
           <div className="text-center">
             <h3 className="text-xl font-bold mb-4">Cari Magang</h3>
             <p className="text-gray-400 mb-4">
-              "Platform perantara pencarian magang yang mendukung SDG 8 untuk
-              masa depan yang lebih baik."
+              &quot;Platform perantara pencarian magang yang mendukung SDG 8
+              untuk masa depan yang lebih baik.&quot;
             </p>
             <div className="flex justify-center space-x-6 text-sm text-gray-400">
               <a href="#" className="hover:text-white">

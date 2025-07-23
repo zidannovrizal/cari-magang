@@ -67,8 +67,8 @@ export default function Register() {
             <img src="/favicon.png" alt="Cari Magang" className="w-36 h-36" />
           </div>
           <p className="text-gray-600">
-            "Bergabunglah dengan ribuan mahasiswa yang telah menemukan magang
-            impian"
+            &quot;Bergabunglah dengan ribuan mahasiswa yang telah menemukan
+            magang impian&quot;
           </p>
         </div>
       </div>
@@ -218,19 +218,19 @@ export default function Register() {
           <ul className="space-y-2 text-sm text-blue-800">
             <li className="flex items-center">
               <span className="text-blue-600 mr-2">✓</span>
-              "Akses ke ribuan lowongan magang berkualitas"
+              &quot;Akses ke ribuan lowongan magang berkualitas&quot;
             </li>
             <li className="flex items-center">
               <span className="text-blue-600 mr-2">✓</span>
-              "Rekomendasi personal berdasarkan skill dan minat"
+              &quot;Rekomendasi personal berdasarkan skill dan minat&quot;
             </li>
             <li className="flex items-center">
               <span className="text-blue-600 mr-2">✓</span>
-              "Tips karir dan persiapan interview"
+              &quot;Tips karir dan persiapan interview&quot;
             </li>
             <li className="flex items-center">
               <span className="text-blue-600 mr-2">✓</span>
-              "Mendukung SDG 8: Decent Work & Economic Growth"
+              &quot;Mendukung SDG 8: Decent Work & Economic Growth&quot;
             </li>
           </ul>
         </div>
@@ -242,8 +242,8 @@ export default function Register() {
           🎯 SDG 8 - Decent Work & Economic Growth
         </div>
         <p className="mt-2 text-sm text-gray-600">
-          "Bergabung dalam misi menciptakan pekerjaan layak dan pertumbuhan
-          ekonomi berkelanjutan"
+          &quot;Bergabung dalam misi menciptakan pekerjaan layak dan pertumbuhan
+          ekonomi berkelanjutan&quot;
         </p>
       </div>
     </div>

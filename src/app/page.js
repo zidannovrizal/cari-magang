@@ -101,9 +101,9 @@ export default function Home() {
               <span className="text-blue-600"> Impianmu</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              "Platform pencarian magang yang menghubungkan mahasiswa dengan
-              perusahaan terbaik. Fokus pada pekerjaan layak dan pertumbuhan
-              ekonomi berkelanjutan."
+              &quot;Platform pencarian magang yang menghubungkan mahasiswa
+              dengan perusahaan terbaik. Fokus pada pekerjaan layak dan
+              pertumbuhan ekonomi berkelanjutan.&quot;
             </p>
             <div className="flex justify-center">
               <button
@@ -161,8 +161,8 @@ export default function Home() {
                   </h3>
                 </div>
                 <p className="text-yellow-700 mb-4">
-                  "Silakan masuk terlebih dahulu untuk mengakses fitur pencarian
-                  magang yang lengkap dan personal."
+                  &quot;Silakan masuk terlebih dahulu untuk mengakses fitur
+                  pencarian magang yang lengkap dan personal.&quot;
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button
@@ -307,31 +307,33 @@ export default function Home() {
               Mendukung SDG 8: Decent Work & Economic Growth
             </h2>
             <p className="text-xl mb-8 max-w-3xl mx-auto">
-              "Kami berkomitmen untuk menghubungkan mahasiswa dengan peluang
-              magang yang berkualitas, mendukung pertumbuhan ekonomi
-              berkelanjutan dan pekerjaan yang layak untuk semua."
+              &quot;Kami berkomitmen untuk menghubungkan mahasiswa dengan
+              peluang magang yang berkualitas, mendukung pertumbuhan ekonomi
+              berkelanjutan dan pekerjaan yang layak untuk semua.&quot;
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
               <div className="text-center">
                 <div className="text-4xl mb-4">🎯</div>
                 <h3 className="text-xl font-semibold mb-2">Decent Work</h3>
                 <p className="text-blue-100">
-                  "Memastikan setiap magang memberikan pengalaman belajar yang
-                  bermakna"
+                  &quot;Memastikan setiap magang memberikan pengalaman belajar
+                  yang bermakna&quot;
                 </p>
               </div>
               <div className="text-center">
                 <div className="text-4xl mb-4">📈</div>
                 <h3 className="text-xl font-semibold mb-2">Economic Growth</h3>
                 <p className="text-blue-100">
-                  "Mendorong pertumbuhan ekonomi melalui talent development"
+                  &quot;Mendorong pertumbuhan ekonomi melalui talent
+                  development&quot;
                 </p>
               </div>
               <div className="text-center">
                 <div className="text-4xl mb-4">🤝</div>
                 <h3 className="text-xl font-semibold mb-2">Collaboration</h3>
                 <p className="text-blue-100">
-                  "Menjembatani gap antara dunia pendidikan dan industri"
+                  &quot;Menjembatani gap antara dunia pendidikan dan
+                  industri&quot;
                 </p>
               </div>
             </div>
@@ -346,8 +348,8 @@ export default function Home() {
             <div>
               <h3 className="text-xl font-bold mb-4">Cari Magang</h3>
               <p className="text-gray-400">
-                "Platform pencarian magang terdepan yang mendukung SDG 8 untuk
-                masa depan yang lebih baik."
+                &quot;Platform pencarian magang terdepan yang mendukung SDG 8
+                untuk masa depan yang lebih baik.&quot;
               </p>
             </div>
             <div></div>
