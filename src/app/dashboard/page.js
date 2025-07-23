@@ -34,48 +34,44 @@ export default function Dashboard() {
   });
   const router = useRouter();
 
-  // Initialize user and fetch data
   useEffect(() => {
-    const initializeDashboard = async () => {
-      const token = localStorage.getItem("token");
-      const userData = localStorage.getItem("user");
+    // Cek apakah user sudah login
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
 
-      if (!token) {
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    if (userData) {
+      try {
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser);
+        setEditForm({
+          name: parsedUser.name || "",
+          email: parsedUser.email || "",
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        // Clear invalid data
+        localStorage.removeItem("user");
         router.push("/login");
-        return;
       }
+    }
 
-      if (userData) {
-        try {
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
-          setEditForm({
-            name: parsedUser.name || "",
-            email: parsedUser.email || "",
-            currentPassword: "",
-            newPassword: "",
-            confirmPassword: "",
-          });
-        } catch (error) {
-          console.error("Error parsing user data:", error);
-          localStorage.removeItem("user");
-          router.push("/login");
-          return;
-        }
-      }
-
-      // Fetch data
-      await fetchJobs(token);
-      await fetchOrganizations(token);
-    };
-
-    initializeDashboard();
+    // Fetch data magang dan organizations
+    fetchJobs(token);
+    fetchOrganizations(token);
   }, [router]);
 
-  // Fetch jobs when filters change
+  // Separate useEffect for pagination and filters
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token && user) {
+    if (token) {
       fetchJobs(token);
     }
   }, [
@@ -100,19 +96,24 @@ export default function Dashboard() {
       });
 
       const data = await response.json();
+
       if (data.success) {
         setOrganizations(data.data || []);
+      } else {
+        console.error("Error fetching organizations:", data.message);
       }
     } catch (error) {
       console.error("Error fetching organizations:", error);
+      // Don't throw error, just log it
     }
   };
 
   const fetchJobs = async (token) => {
     try {
       setIsLoading(true);
-      setError("");
+      setError(""); // Clear previous errors
 
+      // Build query parameters
       const params = new URLSearchParams({
         page: pagination.page,
         limit: pagination.limit,
@@ -163,12 +164,14 @@ export default function Dashboard() {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Token tidak ditemukan");
       return;
     }
 
+    // Validasi password baru jika diisi
     if (
       editForm.newPassword &&
       editForm.newPassword !== editForm.confirmPassword
@@ -183,6 +186,7 @@ export default function Dashboard() {
         email: editForm.email,
       };
 
+      // Tambahkan password jika diisi
       if (editForm.newPassword) {
         updateData.currentPassword = editForm.currentPassword;
         updateData.newPassword = editForm.newPassword;
@@ -203,6 +207,7 @@ export default function Dashboard() {
       const data = await response.json();
 
       if (data.success) {
+        // Update user data di localStorage
         const updatedUser = {
           ...user,
           name: editForm.name,
@@ -210,6 +215,7 @@ export default function Dashboard() {
         };
         localStorage.setItem("user", JSON.stringify(updatedUser));
         setUser(updatedUser);
+
         alert("Profil berhasil diperbarui!");
         setShowEditProfile(false);
         setEditForm({
@@ -229,6 +235,7 @@ export default function Dashboard() {
   };
 
   const handleApply = (job) => {
+    // Buka link apply eksternal jika ada
     if (job.external_apply_url) {
       window.open(job.external_apply_url, "_blank");
     } else if (job.url) {
@@ -250,18 +257,21 @@ export default function Dashboard() {
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
-    setPagination((prev) => ({ ...prev, page: 1 }));
+    setPagination((prev) => ({ ...prev, page: 1 })); // Reset ke halaman 1
+    // Scroll to top for better UX
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePageChange = (page) => {
     setPagination((prev) => ({ ...prev, page }));
+    // Scroll to top for better UX
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
     setPagination((prev) => ({ ...prev, page: 1 }));
+    // Scroll to top for better UX
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -292,7 +302,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
+      {/* Navigation untuk user yang sudah login */}
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -306,6 +316,7 @@ export default function Dashboard() {
               </div>
             </div>
 
+            {/* Profile Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setShowProfileDropdown(!showProfileDropdown)}
@@ -330,6 +341,7 @@ export default function Dashboard() {
                 </svg>
               </button>
 
+              {/* Dropdown Menu */}
               {showProfileDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                   <button
@@ -354,7 +366,7 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      {/* Header */}
+      {/* Header Section untuk user yang sudah login */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -363,7 +375,8 @@ export default function Dashboard() {
                 Temukan Magang Impianmu
               </h1>
               <p className="text-gray-600 mt-1">
-                "Platform perantara untuk mencari lowongan magang berkualitas"
+                &quot;Platform perantara untuk mencari lowongan magang
+                berkualitas&quot;
               </p>
             </div>
             <div className="mt-4 md:mt-0">
@@ -376,7 +389,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Search dan Filter */}
+      {/* Search dan Filter Section */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <form
@@ -426,6 +439,25 @@ export default function Dashboard() {
                 ))}
               </select>
             </div>
+            {/* Commented karena project khusus untuk intern
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tipe Pekerjaan
+              </label>
+              <select
+                value={filters.employment_type}
+                onChange={(e) =>
+                  handleFilterChange("employment_type", e.target.value)
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              >
+                <option value="">Semua Tipe</option>
+                <option value="INTERN">Internship</option>
+                <option value="FULL_TIME">Full Time</option>
+                <option value="PART_TIME">Part Time</option>
+              </select>
+            </div>
+            */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Remote
@@ -444,7 +476,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - List Internship */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
@@ -533,6 +565,22 @@ export default function Dashboard() {
                           Remote
                         </span>
                       )}
+                      {/* Commented karena project khusus untuk intern
+                      {job.employment_type && (
+                        <span className="flex items-center">
+                          <span className="mr-1">💼</span>
+                          {formatEmploymentType(job.employment_type)}
+                        </span>
+                      )}
+                      */}
+                      {/* Commented karena project khusus untuk intern
+                      {job.seniority && (
+                        <span className="flex items-center">
+                          <span className="mr-1">👤</span>
+                          {job.seniority}
+                        </span>
+                      )}
+                      */}
                     </div>
 
                     {job.description && (
@@ -670,6 +718,7 @@ export default function Dashboard() {
               </div>
 
               <div className="space-y-4">
+                {/* Company Info */}
                 <div className="flex items-center">
                   {selectedJob.organization_logo ? (
                     <img
@@ -701,6 +750,7 @@ export default function Dashboard() {
                   </div>
                 </div>
 
+                {/* Job Details */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">
@@ -762,6 +812,7 @@ export default function Dashboard() {
                   </div>
                 </div>
 
+                {/* Description */}
                 {selectedJob.description && (
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">
@@ -773,6 +824,7 @@ export default function Dashboard() {
                   </div>
                 )}
 
+                {/* Organization Description */}
                 {selectedJob.organization_description && (
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">
@@ -784,6 +836,7 @@ export default function Dashboard() {
                   </div>
                 )}
 
+                {/* Action Buttons */}
                 <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
                   <button
                     onClick={handleCloseDetail}
@@ -953,8 +1006,8 @@ export default function Dashboard() {
           <div className="text-center">
             <h3 className="text-xl font-bold mb-4">Cari Magang</h3>
             <p className="text-gray-400 mb-4">
-              "Platform perantara pencarian magang yang mendukung SDG 8 untuk
-              masa depan yang lebih baik."
+              &quot;Platform perantara pencarian magang yang mendukung SDG 8
+              untuk masa depan yang lebih baik.&quot;
             </p>
             <div className="flex justify-center space-x-6 text-sm text-gray-400">
               <a href="#" className="hover:text-white">
