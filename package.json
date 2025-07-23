@@ -2,16 +2,23 @@
   "name": "cari-magang",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:connection": "node scripts/testConnection.js",
+    "check:backend": "node scripts/checkBackendStatus.js",
+    "debug:backend": "node scripts/debugBackend.js",
+    "test:database": "node scripts/testDatabase.js"
   },
   "dependencies": {
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.4.1"
+    "next": "15.4.1",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

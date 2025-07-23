@@ -13,9 +13,14 @@ export default function Home() {
 
   const fetchPopularJobs = async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/job-board/popular`
-      );
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://cari-magang-be-production.up.railway.app";
+      const response = await fetch(`${apiUrl}/api/job-board/popular`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const data = await response.json();
 
       if (data.success) {

@@ -63,14 +63,15 @@ export default function Dashboard() {
 
   const fetchOrganizations = async (token) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/job-board/organizations`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://cari-magang-be-production.up.railway.app";
+      const response = await fetch(`${apiUrl}/api/job-board/organizations`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       const data = await response.json();
 
@@ -101,14 +102,15 @@ export default function Dashboard() {
         ...(filters.remote !== "" && { remote: filters.remote }),
       });
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/job-board?${params}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://cari-magang-be-production.up.railway.app";
+      const response = await fetch(`${apiUrl}/api/job-board?${params}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       const data = await response.json();
 
