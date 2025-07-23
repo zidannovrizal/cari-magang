@@ -11,7 +11,13 @@
     "test:connection": "node scripts/testConnection.js",
     "check:backend": "node scripts/checkBackendStatus.js",
     "debug:backend": "node scripts/debugBackend.js",
-    "test:database": "node scripts/testDatabase.js"
+    "test:database": "node scripts/testDatabase.js",
+    "test:railway-db": "node scripts/testRailwayDB.js",
+    "test:cors": "node scripts/testCORS.js",
+    "test:backend": "node scripts/testBackendEndpoints.js",
+    "setup:railway-db": "node scripts/setupRailwayDB.js",
+    "fix:db-schema": "node scripts/fixDatabaseSchema.js",
+    "test:register": "node scripts/testRegister.js"
   },
   "dependencies": {
     "react": "19.1.0",

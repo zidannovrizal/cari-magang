@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
@@ -59,9 +59,17 @@ export default function Dashboard() {
     // Fetch data magang dan organizations
     fetchJobs(token);
     fetchOrganizations(token);
-  }, [router, pagination.page, filters, fetchJobs, fetchOrganizations]);
+  }, [router]);
 
-  const fetchOrganizations = async (token) => {
+  // Separate useEffect for pagination and filters
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchJobs(token);
+    }
+  }, [fetchJobs]);
+
+  const fetchOrganizations = useCallback(async (token) => {
     try {
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
@@ -83,54 +91,65 @@ export default function Dashboard() {
     } catch (error) {
       console.error("Error fetching organizations:", error);
     }
-  };
+  }, []);
 
-  const fetchJobs = async (token) => {
-    try {
-      setIsLoading(true);
+  const fetchJobs = useCallback(
+    async (token) => {
+      try {
+        setIsLoading(true);
 
-      // Build query parameters
-      const params = new URLSearchParams({
-        page: pagination.page,
-        limit: pagination.limit,
-        ...(filters.search && { search: filters.search }),
-        ...(filters.location && { location: filters.location }),
-        ...(filters.organization && { organization: filters.organization }),
-        ...(filters.employment_type && {
-          employment_type: filters.employment_type,
-        }),
-        ...(filters.remote !== "" && { remote: filters.remote }),
-      });
+        // Build query parameters
+        const params = new URLSearchParams({
+          page: pagination.page,
+          limit: pagination.limit,
+          ...(filters.search && { search: filters.search }),
+          ...(filters.location && { location: filters.location }),
+          ...(filters.organization && { organization: filters.organization }),
+          ...(filters.employment_type && {
+            employment_type: filters.employment_type,
+          }),
+          ...(filters.remote !== "" && { remote: filters.remote }),
+        });
 
-      const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL ||
-        "https://cari-magang-be-production.up.railway.app";
-      const response = await fetch(`${apiUrl}/api/job-board?${params}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+        const apiUrl =
+          process.env.NEXT_PUBLIC_API_URL ||
+          "https://cari-magang-be-production.up.railway.app";
+        const response = await fetch(`${apiUrl}/api/job-board?${params}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.success) {
-        setJobs(data.data || []);
-        setPagination((prev) => ({
-          ...prev,
-          total: data.pagination?.total || 0,
-          totalPages: data.pagination?.totalPages || 0,
-        }));
-      } else {
-        setError(data.message || "Gagal mengambil data magang");
+        if (data.success) {
+          setJobs(data.data || []);
+          setPagination((prev) => ({
+            ...prev,
+            total: data.pagination?.total || 0,
+            totalPages: data.pagination?.totalPages || 0,
+          }));
+        } else {
+          setError(data.message || "Gagal mengambil data magang");
+        }
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+        setError("Terjadi kesalahan saat mengambil data");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
-      setError("Terjadi kesalahan saat mengambil data");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [
+      pagination.page,
+      pagination.limit,
+      filters.search,
+      filters.location,
+      filters.organization,
+      filters.employment_type,
+      filters.remote,
+    ]
+  );
 
   const handleLogout = () => {
     localStorage.removeItem("token");
